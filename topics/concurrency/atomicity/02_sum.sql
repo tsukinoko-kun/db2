@@ -1,0 +1,1 @@
+SELECT sum(balance) from accounts;

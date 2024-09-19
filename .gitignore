@@ -1,0 +1,7 @@
+node_modules
+.DS_Store
+.terraform
+*.tfstate
+*.tfstate.backup
+*.zip
+.ipynb_checkpoints

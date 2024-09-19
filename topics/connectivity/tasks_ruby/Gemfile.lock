@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    pg (1.4.6)
+
+PLATFORMS
+  aarch64-linux-musl
+
+DEPENDENCIES
+  pg
+
+BUNDLED WITH
+   2.4.10

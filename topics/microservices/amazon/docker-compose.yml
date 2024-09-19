@@ -1,0 +1,36 @@
+services:
+  # mqtt server
+  mosquitto:
+    image: eclipse-mosquitto:2
+    volumes:
+      - "./mosquitto:/mosquitto"
+
+  # test tool
+  test:
+    build: test
+
+  # services
+  order:
+    build: services/order
+    depends_on:
+      - mosquitto
+
+  payment:
+    build: services/payment
+    depends_on:
+      - mosquitto
+
+  warehouse:
+    build: services/warehouse
+    depends_on:
+      - mosquitto
+
+  picking:
+    build: services/picking
+    depends_on:
+      - mosquitto
+
+  mail:
+    build: services/mail
+    depends_on:
+      - mosquitto

@@ -1,0 +1,11 @@
+alice:
+  name: Alice
+  email: alice@example.com
+  character: peach
+  race:
+
+bob:
+  name: Bob
+  email: bob@example.com
+  character: mario
+  race: one

@@ -1,0 +1,16 @@
+services:
+  api:
+    build: api
+    command: ./bin/dev
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - "./api:/api"
+    tty: true
+  webapp:
+    image: python:3
+    ports:
+      - "127.0.0.1:4000:4000"
+    command: python -m http.server 4000 --bind 0.0.0.0 -d /webapp
+    volumes:
+      - "./webapp:/webapp"

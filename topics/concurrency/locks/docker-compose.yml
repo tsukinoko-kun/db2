@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    volumes:
+      - "./data:/var/lib/postgresql/data"
+      - "./:/root/app"
+    working_dir: /root/app
+    environment:
+      POSTGRES_PASSWORD: secret

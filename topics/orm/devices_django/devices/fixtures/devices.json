@@ -1,0 +1,24 @@
+[
+  {
+    "model": "devices.device",
+    "pk": 1,
+    "fields": {
+      "make": "Apple",
+      "model": "iPad Pro",
+      "location": "E123",
+      "inventory_id": "apple_ipad_pro_1",
+      "purchased_at": "2022-04-26"
+    }
+  },
+  {
+    "model": "devices.device",
+    "pk": 2,
+    "fields": {
+      "make": "Google",
+      "model": "Pixel",
+      "location": "E123",
+      "inventory_id": "google_pixel_1",
+      "purchased_at": "2022-04-22"
+    }
+  }
+]

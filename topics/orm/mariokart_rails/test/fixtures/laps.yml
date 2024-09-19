@@ -1,0 +1,9 @@
+one:
+  duration: 3000
+  player: bob
+  race: one
+
+two:
+  duration: 4000
+  player: bob
+  race: one

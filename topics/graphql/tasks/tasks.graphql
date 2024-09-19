@@ -1,0 +1,1128 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+"""
+Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
+"""
+input Boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+"""ordering argument of a cursor"""
+enum cursor_ordering {
+  """ascending ordering of the cursor"""
+  ASC
+
+  """descending ordering of the cursor"""
+  DESC
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "projects"
+  """
+  delete_projects(
+    """filter the rows which have to be deleted"""
+    where: projects_bool_exp!
+  ): projects_mutation_response
+
+  """
+  delete single row from the table: "projects"
+  """
+  delete_projects_by_pk(id: Int!): projects
+
+  """
+  delete data from the table: "tasks"
+  """
+  delete_tasks(
+    """filter the rows which have to be deleted"""
+    where: tasks_bool_exp!
+  ): tasks_mutation_response
+
+  """
+  delete single row from the table: "tasks"
+  """
+  delete_tasks_by_pk(id: Int!): tasks
+
+  """
+  insert data into the table: "projects"
+  """
+  insert_projects(
+    """the rows to be inserted"""
+    objects: [projects_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: projects_on_conflict
+  ): projects_mutation_response
+
+  """
+  insert a single row into the table: "projects"
+  """
+  insert_projects_one(
+    """the row to be inserted"""
+    object: projects_insert_input!
+
+    """upsert condition"""
+    on_conflict: projects_on_conflict
+  ): projects
+
+  """
+  insert data into the table: "tasks"
+  """
+  insert_tasks(
+    """the rows to be inserted"""
+    objects: [tasks_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: tasks_on_conflict
+  ): tasks_mutation_response
+
+  """
+  insert a single row into the table: "tasks"
+  """
+  insert_tasks_one(
+    """the row to be inserted"""
+    object: tasks_insert_input!
+
+    """upsert condition"""
+    on_conflict: tasks_on_conflict
+  ): tasks
+
+  """
+  update data of the table: "projects"
+  """
+  update_projects(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: projects_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: projects_set_input
+
+    """filter the rows which have to be updated"""
+    where: projects_bool_exp!
+  ): projects_mutation_response
+
+  """
+  update single row of the table: "projects"
+  """
+  update_projects_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: projects_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: projects_set_input
+    pk_columns: projects_pk_columns_input!
+  ): projects
+
+  """
+  update multiples rows of table: "projects"
+  """
+  update_projects_many(
+    """updates to execute, in order"""
+    updates: [projects_updates!]!
+  ): [projects_mutation_response]
+
+  """
+  update data of the table: "tasks"
+  """
+  update_tasks(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: tasks_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: tasks_set_input
+
+    """filter the rows which have to be updated"""
+    where: tasks_bool_exp!
+  ): tasks_mutation_response
+
+  """
+  update single row of the table: "tasks"
+  """
+  update_tasks_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: tasks_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: tasks_set_input
+    pk_columns: tasks_pk_columns_input!
+  ): tasks
+
+  """
+  update multiples rows of table: "tasks"
+  """
+  update_tasks_many(
+    """updates to execute, in order"""
+    updates: [tasks_updates!]!
+  ): [tasks_mutation_response]
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+"""
+columns and relationships of "projects"
+"""
+type projects {
+  id: Int!
+  name: String!
+
+  """An array relationship"""
+  tasks(
+    """distinct select on columns"""
+    distinct_on: [tasks_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tasks_order_by!]
+
+    """filter the rows returned"""
+    where: tasks_bool_exp
+  ): [tasks!]!
+
+  """An aggregate relationship"""
+  tasks_aggregate(
+    """distinct select on columns"""
+    distinct_on: [tasks_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tasks_order_by!]
+
+    """filter the rows returned"""
+    where: tasks_bool_exp
+  ): tasks_aggregate!
+}
+
+"""
+aggregated selection of "projects"
+"""
+type projects_aggregate {
+  aggregate: projects_aggregate_fields
+  nodes: [projects!]!
+}
+
+"""
+aggregate fields of "projects"
+"""
+type projects_aggregate_fields {
+  avg: projects_avg_fields
+  count(columns: [projects_select_column!], distinct: Boolean): Int!
+  max: projects_max_fields
+  min: projects_min_fields
+  stddev: projects_stddev_fields
+  stddev_pop: projects_stddev_pop_fields
+  stddev_samp: projects_stddev_samp_fields
+  sum: projects_sum_fields
+  var_pop: projects_var_pop_fields
+  var_samp: projects_var_samp_fields
+  variance: projects_variance_fields
+}
+
+"""aggregate avg on columns"""
+type projects_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "projects". All fields are combined with a logical 'AND'.
+"""
+input projects_bool_exp {
+  _and: [projects_bool_exp!]
+  _not: projects_bool_exp
+  _or: [projects_bool_exp!]
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  tasks: tasks_bool_exp
+  tasks_aggregate: tasks_aggregate_bool_exp
+}
+
+"""
+unique or primary key constraints on table "projects"
+"""
+enum projects_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  projects_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "projects"
+"""
+input projects_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "projects"
+"""
+input projects_insert_input {
+  id: Int
+  name: String
+  tasks: tasks_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type projects_max_fields {
+  id: Int
+  name: String
+}
+
+"""aggregate min on columns"""
+type projects_min_fields {
+  id: Int
+  name: String
+}
+
+"""
+response of any mutation on the table "projects"
+"""
+type projects_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [projects!]!
+}
+
+"""
+input type for inserting object relation for remote table "projects"
+"""
+input projects_obj_rel_insert_input {
+  data: projects_insert_input!
+
+  """upsert condition"""
+  on_conflict: projects_on_conflict
+}
+
+"""
+on_conflict condition type for table "projects"
+"""
+input projects_on_conflict {
+  constraint: projects_constraint!
+  update_columns: [projects_update_column!]! = []
+  where: projects_bool_exp
+}
+
+"""Ordering options when selecting data from "projects"."""
+input projects_order_by {
+  id: order_by
+  name: order_by
+  tasks_aggregate: tasks_aggregate_order_by
+}
+
+"""primary key columns input for table: projects"""
+input projects_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "projects"
+"""
+enum projects_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""
+input type for updating data in table "projects"
+"""
+input projects_set_input {
+  id: Int
+  name: String
+}
+
+"""aggregate stddev on columns"""
+type projects_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type projects_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type projects_stddev_samp_fields {
+  id: Float
+}
+
+"""
+Streaming cursor of the table "projects"
+"""
+input projects_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: projects_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input projects_stream_cursor_value_input {
+  id: Int
+  name: String
+}
+
+"""aggregate sum on columns"""
+type projects_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "projects"
+"""
+enum projects_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+input projects_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: projects_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: projects_set_input
+
+  """filter the rows which have to be updated"""
+  where: projects_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type projects_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type projects_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type projects_variance_fields {
+  id: Float
+}
+
+type query_root {
+  """
+  fetch data from the table: "projects"
+  """
+  projects(
+    """distinct select on columns"""
+    distinct_on: [projects_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [projects_order_by!]
+
+    """filter the rows returned"""
+    where: projects_bool_exp
+  ): [projects!]!
+
+  """
+  fetch aggregated fields from the table: "projects"
+  """
+  projects_aggregate(
+    """distinct select on columns"""
+    distinct_on: [projects_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [projects_order_by!]
+
+    """filter the rows returned"""
+    where: projects_bool_exp
+  ): projects_aggregate!
+
+  """fetch data from the table: "projects" using primary key columns"""
+  projects_by_pk(id: Int!): projects
+
+  """An array relationship"""
+  tasks(
+    """distinct select on columns"""
+    distinct_on: [tasks_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tasks_order_by!]
+
+    """filter the rows returned"""
+    where: tasks_bool_exp
+  ): [tasks!]!
+
+  """An aggregate relationship"""
+  tasks_aggregate(
+    """distinct select on columns"""
+    distinct_on: [tasks_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tasks_order_by!]
+
+    """filter the rows returned"""
+    where: tasks_bool_exp
+  ): tasks_aggregate!
+
+  """fetch data from the table: "tasks" using primary key columns"""
+  tasks_by_pk(id: Int!): tasks
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "projects"
+  """
+  projects(
+    """distinct select on columns"""
+    distinct_on: [projects_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [projects_order_by!]
+
+    """filter the rows returned"""
+    where: projects_bool_exp
+  ): [projects!]!
+
+  """
+  fetch aggregated fields from the table: "projects"
+  """
+  projects_aggregate(
+    """distinct select on columns"""
+    distinct_on: [projects_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [projects_order_by!]
+
+    """filter the rows returned"""
+    where: projects_bool_exp
+  ): projects_aggregate!
+
+  """fetch data from the table: "projects" using primary key columns"""
+  projects_by_pk(id: Int!): projects
+
+  """
+  fetch data from the table in a streaming manner: "projects"
+  """
+  projects_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [projects_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: projects_bool_exp
+  ): [projects!]!
+
+  """An array relationship"""
+  tasks(
+    """distinct select on columns"""
+    distinct_on: [tasks_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tasks_order_by!]
+
+    """filter the rows returned"""
+    where: tasks_bool_exp
+  ): [tasks!]!
+
+  """An aggregate relationship"""
+  tasks_aggregate(
+    """distinct select on columns"""
+    distinct_on: [tasks_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tasks_order_by!]
+
+    """filter the rows returned"""
+    where: tasks_bool_exp
+  ): tasks_aggregate!
+
+  """fetch data from the table: "tasks" using primary key columns"""
+  tasks_by_pk(id: Int!): tasks
+
+  """
+  fetch data from the table in a streaming manner: "tasks"
+  """
+  tasks_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [tasks_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: tasks_bool_exp
+  ): [tasks!]!
+}
+
+"""
+columns and relationships of "tasks"
+"""
+type tasks {
+  done: Boolean!
+  id: Int!
+  name: String!
+
+  """An object relationship"""
+  project: projects!
+  project_id: Int!
+}
+
+"""
+aggregated selection of "tasks"
+"""
+type tasks_aggregate {
+  aggregate: tasks_aggregate_fields
+  nodes: [tasks!]!
+}
+
+input tasks_aggregate_bool_exp {
+  bool_and: tasks_aggregate_bool_exp_bool_and
+  bool_or: tasks_aggregate_bool_exp_bool_or
+  count: tasks_aggregate_bool_exp_count
+}
+
+input tasks_aggregate_bool_exp_bool_and {
+  arguments: tasks_select_column_tasks_aggregate_bool_exp_bool_and_arguments_columns!
+  distinct: Boolean
+  filter: tasks_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input tasks_aggregate_bool_exp_bool_or {
+  arguments: tasks_select_column_tasks_aggregate_bool_exp_bool_or_arguments_columns!
+  distinct: Boolean
+  filter: tasks_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input tasks_aggregate_bool_exp_count {
+  arguments: [tasks_select_column!]
+  distinct: Boolean
+  filter: tasks_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "tasks"
+"""
+type tasks_aggregate_fields {
+  avg: tasks_avg_fields
+  count(columns: [tasks_select_column!], distinct: Boolean): Int!
+  max: tasks_max_fields
+  min: tasks_min_fields
+  stddev: tasks_stddev_fields
+  stddev_pop: tasks_stddev_pop_fields
+  stddev_samp: tasks_stddev_samp_fields
+  sum: tasks_sum_fields
+  var_pop: tasks_var_pop_fields
+  var_samp: tasks_var_samp_fields
+  variance: tasks_variance_fields
+}
+
+"""
+order by aggregate values of table "tasks"
+"""
+input tasks_aggregate_order_by {
+  avg: tasks_avg_order_by
+  count: order_by
+  max: tasks_max_order_by
+  min: tasks_min_order_by
+  stddev: tasks_stddev_order_by
+  stddev_pop: tasks_stddev_pop_order_by
+  stddev_samp: tasks_stddev_samp_order_by
+  sum: tasks_sum_order_by
+  var_pop: tasks_var_pop_order_by
+  var_samp: tasks_var_samp_order_by
+  variance: tasks_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "tasks"
+"""
+input tasks_arr_rel_insert_input {
+  data: [tasks_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: tasks_on_conflict
+}
+
+"""aggregate avg on columns"""
+type tasks_avg_fields {
+  id: Float
+  project_id: Float
+}
+
+"""
+order by avg() on columns of table "tasks"
+"""
+input tasks_avg_order_by {
+  id: order_by
+  project_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "tasks". All fields are combined with a logical 'AND'.
+"""
+input tasks_bool_exp {
+  _and: [tasks_bool_exp!]
+  _not: tasks_bool_exp
+  _or: [tasks_bool_exp!]
+  done: Boolean_comparison_exp
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  project: projects_bool_exp
+  project_id: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "tasks"
+"""
+enum tasks_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  tasks_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "tasks"
+"""
+input tasks_inc_input {
+  id: Int
+  project_id: Int
+}
+
+"""
+input type for inserting data into table "tasks"
+"""
+input tasks_insert_input {
+  done: Boolean
+  id: Int
+  name: String
+  project: projects_obj_rel_insert_input
+  project_id: Int
+}
+
+"""aggregate max on columns"""
+type tasks_max_fields {
+  id: Int
+  name: String
+  project_id: Int
+}
+
+"""
+order by max() on columns of table "tasks"
+"""
+input tasks_max_order_by {
+  id: order_by
+  name: order_by
+  project_id: order_by
+}
+
+"""aggregate min on columns"""
+type tasks_min_fields {
+  id: Int
+  name: String
+  project_id: Int
+}
+
+"""
+order by min() on columns of table "tasks"
+"""
+input tasks_min_order_by {
+  id: order_by
+  name: order_by
+  project_id: order_by
+}
+
+"""
+response of any mutation on the table "tasks"
+"""
+type tasks_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [tasks!]!
+}
+
+"""
+on_conflict condition type for table "tasks"
+"""
+input tasks_on_conflict {
+  constraint: tasks_constraint!
+  update_columns: [tasks_update_column!]! = []
+  where: tasks_bool_exp
+}
+
+"""Ordering options when selecting data from "tasks"."""
+input tasks_order_by {
+  done: order_by
+  id: order_by
+  name: order_by
+  project: projects_order_by
+  project_id: order_by
+}
+
+"""primary key columns input for table: tasks"""
+input tasks_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "tasks"
+"""
+enum tasks_select_column {
+  """column name"""
+  done
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  project_id
+}
+
+"""
+select "tasks_aggregate_bool_exp_bool_and_arguments_columns" columns of table "tasks"
+"""
+enum tasks_select_column_tasks_aggregate_bool_exp_bool_and_arguments_columns {
+  """column name"""
+  done
+}
+
+"""
+select "tasks_aggregate_bool_exp_bool_or_arguments_columns" columns of table "tasks"
+"""
+enum tasks_select_column_tasks_aggregate_bool_exp_bool_or_arguments_columns {
+  """column name"""
+  done
+}
+
+"""
+input type for updating data in table "tasks"
+"""
+input tasks_set_input {
+  done: Boolean
+  id: Int
+  name: String
+  project_id: Int
+}
+
+"""aggregate stddev on columns"""
+type tasks_stddev_fields {
+  id: Float
+  project_id: Float
+}
+
+"""
+order by stddev() on columns of table "tasks"
+"""
+input tasks_stddev_order_by {
+  id: order_by
+  project_id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type tasks_stddev_pop_fields {
+  id: Float
+  project_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "tasks"
+"""
+input tasks_stddev_pop_order_by {
+  id: order_by
+  project_id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type tasks_stddev_samp_fields {
+  id: Float
+  project_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "tasks"
+"""
+input tasks_stddev_samp_order_by {
+  id: order_by
+  project_id: order_by
+}
+
+"""
+Streaming cursor of the table "tasks"
+"""
+input tasks_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: tasks_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input tasks_stream_cursor_value_input {
+  done: Boolean
+  id: Int
+  name: String
+  project_id: Int
+}
+
+"""aggregate sum on columns"""
+type tasks_sum_fields {
+  id: Int
+  project_id: Int
+}
+
+"""
+order by sum() on columns of table "tasks"
+"""
+input tasks_sum_order_by {
+  id: order_by
+  project_id: order_by
+}
+
+"""
+update columns of table "tasks"
+"""
+enum tasks_update_column {
+  """column name"""
+  done
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  project_id
+}
+
+input tasks_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: tasks_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: tasks_set_input
+
+  """filter the rows which have to be updated"""
+  where: tasks_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type tasks_var_pop_fields {
+  id: Float
+  project_id: Float
+}
+
+"""
+order by var_pop() on columns of table "tasks"
+"""
+input tasks_var_pop_order_by {
+  id: order_by
+  project_id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type tasks_var_samp_fields {
+  id: Float
+  project_id: Float
+}
+
+"""
+order by var_samp() on columns of table "tasks"
+"""
+input tasks_var_samp_order_by {
+  id: order_by
+  project_id: order_by
+}
+
+"""aggregate variance on columns"""
+type tasks_variance_fields {
+  id: Float
+  project_id: Float
+}
+
+"""
+order by variance() on columns of table "tasks"
+"""
+input tasks_variance_order_by {
+  id: order_by
+  project_id: order_by
+}
+

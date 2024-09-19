@@ -1,0 +1,9 @@
+peach:
+  name: Peach
+  speed: 5
+  traction: 3
+
+mario:
+  name: Mario
+  speed: 4
+  traction: 4

@@ -1,0 +1,12 @@
+services:
+  redis:
+    image: redis:alpine
+    volumes:
+      - ./data:/data
+
+  jupyter:
+    build: ./jupyter
+    ports:
+      - "127.0.0.1:8888:8888"
+    volumes:
+      - "./:/app"

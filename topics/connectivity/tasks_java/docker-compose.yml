@@ -1,0 +1,19 @@
+services:
+  app:
+    build: .
+    command: ./gradlew run
+    volumes:
+      - "./:/app"
+    depends_on:
+      - postgres
+    platform: linux/amd64
+
+  postgres:
+    image: postgres:14-alpine
+    volumes:
+      - "./data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_PASSWORD: secret
+    # for local development only
+    ports:
+      - "127.0.0.1:5432:5432"
