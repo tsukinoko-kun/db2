@@ -9,4 +9,4 @@ COPY requirements.txt .
 RUN python -m pip install --upgrade pip
 RUN python -m pip install -r requirements.txt
 
-CMD exec jupyter lab --allow-root --no-browser --ip "*"
+CMD pip list && exec jupyter lab --allow-root --no-browser --ip "*"
